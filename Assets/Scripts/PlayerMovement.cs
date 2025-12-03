@@ -188,4 +188,10 @@ public class PlayerMovement : MonoBehaviour
             cameraTransform.localEulerAngles = e;
         }
     }
+    
+    public void ResetVelocity()
+    {
+        velocity = Vector3.zero;
+    }
+
 }
