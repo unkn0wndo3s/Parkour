@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallRunning;
     private float currentCameraTilt = 0f;
     private int wallSide = 0; // -1 left, 1 right
+    private Vector3 lastWallNormal = Vector3.zero;
+
     
     private void Awake()
     {
@@ -128,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isWallRunning = true;
         wallSide = side;
+        lastWallNormal = wallNormal; // ➜ on garde la direction du mur
 
         Vector3 alongWall = Vector3.Cross(wallNormal, Vector3.up);
         if (Vector3.Dot(alongWall, transform.forward) < 0f)
@@ -142,28 +145,37 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = wallRunGravity * Time.deltaTime;
     }
 
+
     void WallJump()
     {
-        RaycastHit hit;
-        Vector3 dir = Vector3.zero;
-
-        if (Physics.Raycast(transform.position, transform.right * wallSide, out hit, wallCheckDistance, wallMask))
+        if (!isWallRunning) return;
+    
+        // On veut sauter dans le sens OPPOSÉ au mur → direction de la normal
+        Vector3 jumpDir = Vector3.zero;
+    
+        if (lastWallNormal != Vector3.zero)
         {
-            Vector3 wallNormal = hit.normal;
-            dir = wallNormal * wallJumpForceSide + Vector3.up * wallJumpForceUp;
+            // Opposé au mur (normal) + vers le haut
+            jumpDir = lastWallNormal * wallJumpForceSide + Vector3.up * wallJumpForceUp;
         }
         else
         {
-            dir = transform.forward * wallJumpForceSide + Vector3.up * wallJumpForceUp;
+            // fallback si jamais la normal n'est pas set (devrait pas arriver)
+            jumpDir = transform.forward * wallJumpForceSide + Vector3.up * wallJumpForceUp;
         }
-
-        velocity.y = dir.y;
-        Vector3 horizontal = dir;
+    
+        // Appliquer la composante verticale dans velocity
+        velocity.y = jumpDir.y;
+    
+        // Appliquer la poussée horizontale une fois
+        Vector3 horizontal = jumpDir;
         horizontal.y = 0f;
-
+    
         controller.Move(horizontal * Time.deltaTime);
+    
         isWallRunning = false;
     }
+
 
     void ApplyGravity()
     {
