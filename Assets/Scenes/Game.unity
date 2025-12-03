@@ -800,7 +800,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 45}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &997464073
@@ -1063,7 +1063,8 @@ Transform:
   m_LocalPosition: {x: -1.65, y: 0, z: -3.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1594959287}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &1147556144
@@ -1199,7 +1200,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -45}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1393591505
@@ -1419,6 +1420,7 @@ GameObject:
   - component: {fileID: 1594959286}
   - component: {fileID: 1594959285}
   - component: {fileID: 1594959288}
+  - component: {fileID: 1594959289}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -1494,11 +1496,11 @@ Transform:
   m_GameObject: {fileID: 1594959284}
   serializedVersion: 2
   m_LocalRotation: {x: 0.122735426, y: -0, z: -0, w: 0.99243945}
-  m_LocalPosition: {x: -1.65, y: 1.6, z: -6.0299997}
+  m_LocalPosition: {x: 0, y: 1.6, z: -2.1599998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1147556143}
   m_LocalEulerAnglesHint: {x: 14.1, y: 0, z: 0}
 --- !u!114 &1594959288
 MonoBehaviour:
@@ -1544,6 +1546,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1594959289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594959284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18bb0902e318a134db7604c02b81ee76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MouseLook
+  playerBody: {fileID: 1147556143}
+  mouseSensitivity: 200
 --- !u!1 &1746420901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,7 +2005,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 15328293}
-  - {fileID: 1594959287}
   - {fileID: 1147556143}
   - {fileID: 1833552713}
   - {fileID: 1586078345}
