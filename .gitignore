@@ -1,0 +1,65 @@
+# =========== UNITY ===========
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+
+# Crash Reports
+sysinfo.txt
+
+# =========== ASSET STORE ===========
+*.unitypackage
+
+# =========== VS / RIDER / VSCODE ===========
+.vs/
+.idea/
+*.sln.iml
+*.csproj
+*.unityproj
+*.pidb
+*.user
+*.userprefs
+*.booproj
+
+# Rider project settings
+*.sln.dotSettings
+
+# Visual Studio code
+.vscode/
+
+# =========== OTHER ===========
+# Auto-generated backup files
+*.bak
+*.backup
+*.orig
+
+# Unity Collaborate
+.collab/
+
+# Unity Cache
+[Aa]ssets/AssetStoreTools*
+
+# TextMesh Pro
+[Tt]extMesh Pro/
+
+# Builds
+*.apk
+*.aab
+*.app
+*.exe
+
+# =========== OS-SPECIFIC ===========
+# Windows
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
