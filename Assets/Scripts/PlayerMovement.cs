@@ -30,12 +30,18 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallRunning;
     private float currentCameraTilt = 0f;
     private int wallSide = 0; // -1 left, 1 right
-
+    
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
+    }
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
