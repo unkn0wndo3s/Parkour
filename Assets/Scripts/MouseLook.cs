@@ -19,6 +19,11 @@ public class MouseLook : MonoBehaviour
 
     private void Update()
     {
+
+        // Si le jeu est en pause (Time.timeScale == 0), on ne bouge plus la caméra
+        if (Time.timeScale == 0f)
+            return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.unscaledDeltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.unscaledDeltaTime;
 
