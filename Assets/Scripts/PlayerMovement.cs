@@ -15,8 +15,9 @@ public class PlayerMovement : MonoBehaviour
     public float wallCheckDistance = 0.8f;
     public float wallRunGravity = -5f;
     public float wallRunSpeed = 8f;
+    public float wallJumpForceSide = 10f;
     public float wallJumpForceUp = 8f;
-    public float wallJumpForceSide = 6f;
+    public float wallJumpForwardBoost = 3f;
     public LayerMask wallMask;
 
     [Header("Camera")]
@@ -24,15 +25,23 @@ public class PlayerMovement : MonoBehaviour
     public float cameraTiltAngle = 10f;
     public float cameraTiltSpeed = 8f;
 
+    [Header("Impulse")]
+    public float impulseDamp = 5f; // plus haut = l'impulsion se dissipe plus vite
+
     private CharacterController controller;
-    private Vector3 velocity;
+    private Vector3 velocity;           // composante verticale
+    private Vector3 externalImpulse;    // impulsions horizontales (walljump, etc.)
     private bool isGrounded;
     private bool isWallRunning;
+    private bool isNearWall;
     private float currentCameraTilt = 0f;
-    private int wallSide = 0; // -1 left, 1 right
+    private int wallSide = 0;           // -1 left, 1 right
     private Vector3 lastWallNormal = Vector3.zero;
 
-    
+    // lock du contrôle vers le mur après un walljump
+    private float wallJumpControlLockTime = 0.3f;
+    private float wallJumpControlTimer = 0f;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -52,6 +61,11 @@ public class PlayerMovement : MonoBehaviour
         HandleWallRun();
         ApplyGravity();
         ApplyCameraTilt();
+        DampenImpulse();
+
+        // décrémente le timer de lock
+        if (wallJumpControlTimer > 0f)
+            wallJumpControlTimer -= Time.deltaTime;
     }
 
     void HandleMovement()
@@ -70,17 +84,33 @@ public class PlayerMovement : MonoBehaviour
         right.Normalize();
 
         Vector3 moveDir = (forward * v + right * h).normalized;
+
+        // 🔒 Pendant un court moment après un walljump, on bloque l'input VERS le mur
+        if (wallJumpControlTimer > 0f && lastWallNormal != Vector3.zero && moveDir.sqrMagnitude > 0.0001f)
+        {
+            Vector3 towardsWall = -lastWallNormal.normalized; // vers le mur
+            float dot = Vector3.Dot(moveDir, towardsWall);
+
+            if (dot > 0f)
+            {
+                moveDir -= towardsWall * dot;
+                moveDir.Normalize();
+            }
+        }
+
         float speed = moveSpeed;
 
         if (!isGrounded && !isWallRunning)
             speed *= airControl;
 
-        Vector3 move = moveDir * speed;
-        Vector3 horizontalVelocity = move;
-        horizontalVelocity.y = velocity.y;
+        // mouvement de base + impulsion externe (walljump etc.)
+        Vector3 horizontal = moveDir * speed + externalImpulse;
 
-        controller.Move(horizontalVelocity * Time.deltaTime);
+        // combine avec la vitesse verticale
+        Vector3 finalMove = new Vector3(horizontal.x, velocity.y, horizontal.z);
+        controller.Move(finalMove * Time.deltaTime);
 
+        // petit reset au sol
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
 
@@ -90,8 +120,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 Jump();
             }
-            else if (isWallRunning)
+            else if (isWallRunning || isNearWall)
             {
+                // 👉 projection si wallrun + jump OU si on glisse le long du mur + jump
                 WallJump();
             }
         }
@@ -106,23 +137,40 @@ public class PlayerMovement : MonoBehaviour
     {
         isWallRunning = false;
         wallSide = 0;
+        isNearWall = false;
 
         if (isGrounded) return;
 
         float v = Input.GetAxisRaw("Vertical");
-        if (v <= 0.1f) return; // faut avancer
 
         RaycastHit hit;
 
         // Check mur à gauche
         if (Physics.Raycast(transform.position, -transform.right, out hit, wallCheckDistance, wallMask))
         {
-            StartWallRun(-1, hit.normal);
+            isNearWall = true;
+            lastWallNormal = hit.normal;
+            wallSide = -1;
+
+            // on ne lance le wallrun que si on avance
+            if (v > 0.1f)
+            {
+                StartWallRun(-1, hit.normal);
+                return;
+            }
         }
         // Check mur à droite
         else if (Physics.Raycast(transform.position, transform.right, out hit, wallCheckDistance, wallMask))
         {
-            StartWallRun(1, hit.normal);
+            isNearWall = true;
+            lastWallNormal = hit.normal;
+            wallSide = 1;
+
+            if (v > 0.1f)
+            {
+                StartWallRun(1, hit.normal);
+                return;
+            }
         }
     }
 
@@ -130,59 +178,63 @@ public class PlayerMovement : MonoBehaviour
     {
         isWallRunning = true;
         wallSide = side;
-        lastWallNormal = wallNormal; // ➜ on garde la direction du mur
+        lastWallNormal = wallNormal;
 
+        // direction le long du mur
         Vector3 alongWall = Vector3.Cross(wallNormal, Vector3.up);
         if (Vector3.Dot(alongWall, transform.forward) < 0f)
             alongWall = -alongWall;
 
+        // on force le déplacement le long du mur via l'impulsion horizontale
         Vector3 wallMove = alongWall * wallRunSpeed;
-        wallMove.y = velocity.y;
+        externalImpulse = wallMove;
 
-        controller.Move(wallMove * Time.deltaTime);
-
+        // gravité réduite pendant le wallrun
         if (velocity.y < 0)
-            velocity.y = wallRunGravity * Time.deltaTime;
+            velocity.y = wallRunGravity;
     }
-
 
     void WallJump()
     {
-        if (!isWallRunning) return;
-    
-        // On veut sauter dans le sens OPPOSÉ au mur → direction de la normal
-        Vector3 jumpDir = Vector3.zero;
-    
+        // direction opposée au mur
+        Vector3 awayFromWall;
         if (lastWallNormal != Vector3.zero)
-        {
-            // Opposé au mur (normal) + vers le haut
-            jumpDir = lastWallNormal * wallJumpForceSide + Vector3.up * wallJumpForceUp;
-        }
+            awayFromWall = lastWallNormal.normalized;
         else
-        {
-            // fallback si jamais la normal n'est pas set (devrait pas arriver)
-            jumpDir = transform.forward * wallJumpForceSide + Vector3.up * wallJumpForceUp;
-        }
-    
-        // Appliquer la composante verticale dans velocity
-        velocity.y = jumpDir.y;
-    
-        // Appliquer la poussée horizontale une fois
-        Vector3 horizontal = jumpDir;
-        horizontal.y = 0f;
-    
-        controller.Move(horizontal * Time.deltaTime);
-    
-        isWallRunning = false;
-    }
+            awayFromWall = -transform.forward;
 
+        // poussée dans la direction de la caméra (avant)
+        Vector3 forward = cameraTransform.forward;
+        forward.y = 0f;
+        forward.Normalize();
+
+        // impulsion horizontale : loin du mur + un peu vers l'avant
+        Vector3 jumpHorizontal = awayFromWall * wallJumpForceSide
+                                 + forward * wallJumpForwardBoost;
+
+        externalImpulse = jumpHorizontal;
+
+        // impulsion verticale
+        velocity.y = wallJumpForceUp;
+
+        isWallRunning = false;
+
+        // 🔒 lock temporaire du contrôle vers le mur
+        wallJumpControlTimer = wallJumpControlLockTime;
+    }
 
     void ApplyGravity()
     {
+        // si wallrun actif, on ne rajoute pas de gravité ici
         if (isWallRunning) return;
 
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(new Vector3(0, velocity.y, 0) * Time.deltaTime);
+    }
+
+    void DampenImpulse()
+    {
+        // dissipation progressive de l'impulsion horizontale
+        externalImpulse = Vector3.Lerp(externalImpulse, Vector3.zero, impulseDamp * Time.deltaTime);
     }
 
     void ApplyCameraTilt()
@@ -200,10 +252,12 @@ public class PlayerMovement : MonoBehaviour
             cameraTransform.localEulerAngles = e;
         }
     }
-    
+
+    // utilisé par le GameManager quand tu respawn
     public void ResetVelocity()
     {
         velocity = Vector3.zero;
+        externalImpulse = Vector3.zero;
+        wallJumpControlTimer = 0f;
     }
-
 }
