@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 959c50d8d834c2042a284fd28d7227d6
+timeCreated: 1515148156
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Materials/CameraMat_A.mat
+  uploadId: 790128

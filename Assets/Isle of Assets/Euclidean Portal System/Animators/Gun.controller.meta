@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1347f296c5b989408529b768f48555f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Animators/Gun.controller
+  uploadId: 790128

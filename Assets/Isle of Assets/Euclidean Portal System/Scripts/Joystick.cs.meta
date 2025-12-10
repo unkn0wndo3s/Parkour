@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 65e6e1cce5d06064187a02c0991e1f24
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Scripts/Joystick.cs
+  uploadId: 790128

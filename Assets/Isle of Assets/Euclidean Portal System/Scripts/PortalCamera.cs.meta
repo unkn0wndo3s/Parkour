@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 555de10a985e07f47942cba70242d94f
+timeCreated: 1515148660
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Scripts/PortalCamera.cs
+  uploadId: 790128

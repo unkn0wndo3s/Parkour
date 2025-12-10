@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 78307da8343ee5c4ebad3a9128466894
+timeCreated: 1515148485
+licenseType: Store
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Shaders/Portal.shader
+  uploadId: 790128

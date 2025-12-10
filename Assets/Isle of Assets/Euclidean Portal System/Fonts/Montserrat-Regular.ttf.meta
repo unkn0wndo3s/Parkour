@@ -1,0 +1,39 @@
+fileFormatVersion: 2
+guid: fa4b71ca25e2f124fa95d12ba69f559d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Montserrat
+  fontNames:
+  - Montserrat
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 390373823d650be4d88655d9d06a5d23, type: 3}
+  - {fileID: 12800000, guid: 70bacc07ad051cd46bd6201c5bf6a48c, type: 3}
+  - {fileID: 12800000, guid: 793920276d15bb4429cf6ee37b377f49, type: 3}
+  - {fileID: 12800000, guid: 727fd638b9e51c741bf3288e990ce2ed, type: 3}
+  - {fileID: 12800000, guid: 7ed02548f3fc23d4aa04a9d98e0f6483, type: 3}
+  - {fileID: 12800000, guid: 99c69e8a6bc9e074e882e61838b062d9, type: 3}
+  - {fileID: 12800000, guid: d43292ab3519ac34fa289e7a0c03197f, type: 3}
+  - {fileID: 12800000, guid: a7f416ac7cef7cc438aa636f20dc7dc7, type: 3}
+  - {fileID: 12800000, guid: 992a302dd31ba96479a54be233cd2760, type: 3}
+  - {fileID: 12800000, guid: 1128fdde738c42a4a9cfea79bb0af95f, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Fonts/Montserrat-Regular.ttf
+  uploadId: 790128

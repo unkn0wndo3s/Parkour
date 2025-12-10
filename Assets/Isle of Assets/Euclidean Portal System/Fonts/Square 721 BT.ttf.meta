@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 05b58da5fe3f2e94fbdd1eff6e2675b6
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Square721 BT
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9c7973148eea1ac48b745c6d37c8b18e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225954
+  packageName: Euclidean Portal System
+  packageVersion: 1.0.8
+  assetPath: Assets/Isle of Assets/Euclidean Portal System/Fonts/Square 721 BT.ttf
+  uploadId: 790128
